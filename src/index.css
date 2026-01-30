@@ -1,0 +1,248 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* AgroGrade Design System - Dark Olive Green Agricultural Theme */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Core Green Palette - Rich Agricultural Tones */
+    --background: 75 25% 8%;
+    --foreground: 60 20% 95%;
+
+    --card: 75 20% 12%;
+    --card-foreground: 60 20% 95%;
+
+    --popover: 75 20% 10%;
+    --popover-foreground: 60 20% 95%;
+
+    /* Primary - Deep Olive Green */
+    --primary: 75 45% 35%;
+    --primary-foreground: 60 20% 98%;
+
+    /* Secondary - Warm Olive */
+    --secondary: 65 30% 18%;
+    --secondary-foreground: 60 20% 95%;
+
+    /* Muted - Subtle Earthy Tones */
+    --muted: 70 15% 15%;
+    --muted-foreground: 60 10% 60%;
+
+    /* Accent - Vibrant Leaf Green */
+    --accent: 90 50% 45%;
+    --accent-foreground: 75 25% 8%;
+
+    /* Success - Healthy Plant Green */
+    --success: 120 45% 45%;
+    --success-foreground: 60 20% 98%;
+
+    /* Warning - Harvest Gold */
+    --warning: 45 90% 55%;
+    --warning-foreground: 75 25% 8%;
+
+    /* Destructive - Disease Red */
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 60 20% 98%;
+
+    /* Trust Score Colors */
+    --grade-a: 120 50% 45%;
+    --grade-b: 45 85% 55%;
+    --grade-c: 25 80% 50%;
+
+    /* Sensor Colors */
+    --moisture: 200 70% 50%;
+    --nitrogen: 150 60% 45%;
+    --phosphorus: 280 50% 55%;
+    --potassium: 30 80% 55%;
+
+    --border: 70 20% 20%;
+    --input: 70 20% 18%;
+    --ring: 90 50% 45%;
+
+    --radius: 0.75rem;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(75, 25%, 8%) 0%, hsl(75, 30%, 15%) 50%, hsl(70, 25%, 12%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(75, 20%, 14%) 0%, hsl(75, 20%, 10%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(90, 50%, 45%) 0%, hsl(75, 45%, 35%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(45, 90%, 55%) 0%, hsl(35, 85%, 50%) 100%);
+    --gradient-trust: linear-gradient(135deg, hsl(120, 50%, 45%) 0%, hsl(90, 50%, 45%) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px hsl(75 25% 5% / 0.3);
+    --shadow-md: 0 8px 24px hsl(75 25% 5% / 0.4);
+    --shadow-lg: 0 16px 48px hsl(75 25% 5% / 0.5);
+    --shadow-glow: 0 0 40px hsl(90 50% 45% / 0.2);
+
+    /* Sidebar */
+    --sidebar-background: 75 25% 10%;
+    --sidebar-foreground: 60 20% 95%;
+    --sidebar-primary: 90 50% 45%;
+    --sidebar-primary-foreground: 75 25% 8%;
+    --sidebar-accent: 70 20% 18%;
+    --sidebar-accent-foreground: 60 20% 95%;
+    --sidebar-border: 70 20% 18%;
+    --sidebar-ring: 90 50% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--gradient-hero);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Glass Card Effect */
+  .glass-card {
+    @apply rounded-xl border border-border/50;
+    background: linear-gradient(180deg, hsl(var(--card) / 0.8) 0%, hsl(var(--card) / 0.6) 100%);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Glow Effects */
+  .glow-accent {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Animated Gradient Border */
+  .gradient-border {
+    position: relative;
+    border-radius: var(--radius);
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: calc(var(--radius) + 2px);
+    background: var(--gradient-accent);
+    z-index: -1;
+    opacity: 0.6;
+  }
+
+  /* Trust Tag Badge */
+  .trust-badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full font-semibold text-sm;
+    background: var(--gradient-trust);
+    box-shadow: var(--shadow-sm), 0 0 20px hsl(var(--success) / 0.3);
+  }
+
+  /* Grade Badges */
+  .grade-a {
+    @apply bg-gradient-to-r from-green-500 to-emerald-500 text-white;
+  }
+
+  .grade-b {
+    @apply bg-gradient-to-r from-yellow-500 to-amber-500 text-black;
+  }
+
+  .grade-c {
+    @apply bg-gradient-to-r from-orange-500 to-red-500 text-white;
+  }
+
+  /* Sensor Cards */
+  .sensor-moisture {
+    border-left: 4px solid hsl(var(--moisture));
+  }
+
+  .sensor-nitrogen {
+    border-left: 4px solid hsl(var(--nitrogen));
+  }
+
+  .sensor-phosphorus {
+    border-left: 4px solid hsl(var(--phosphorus));
+  }
+
+  .sensor-potassium {
+    border-left: 4px solid hsl(var(--potassium));
+  }
+
+  /* Animated Background Patterns */
+  .pattern-dots {
+    background-image: radial-gradient(hsl(var(--primary) / 0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .pattern-grid {
+    background-image: 
+      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Leaf Animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px hsl(var(--accent) / 0.3); }
+    50% { box-shadow: 0 0 40px hsl(var(--accent) / 0.5); }
+  }
+
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .animate-scan {
+    animation: scan 2s linear infinite;
+  }
+
+  /* Stat Counter Animation */
+  @keyframes count-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-count {
+    animation: count-up 0.8s ease-out forwards;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent));
+}
