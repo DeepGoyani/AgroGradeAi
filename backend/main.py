@@ -132,11 +132,12 @@ async def health_check():
     Verify API and database connectivity.
     """
     from app.database import async_engine
+    from sqlalchemy import text
     
     db_connected = True
     try:
         async with async_engine.connect() as conn:
-            await conn.execute("SELECT 1")
+            await conn.execute(text("SELECT 1"))
     except Exception:
         db_connected = False
     
