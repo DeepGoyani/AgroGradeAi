@@ -1,0 +1,21 @@
+{
+    "min_golden_hue": 0.75,
+    "max_chaff_percent": 8,
+    "grain_density_min": 0.6,
+    "moisture_max_percent": 12,
+    "test_weight_min_kg_hl": 76,
+    "protein_content_min_percent": 10,
+    "gluten_index_min": 65,
+    "grade_thresholds": {
+        "A": 90,
+        "B": 70,
+        "C": 50
+    },
+    "defect_penalties": {
+        "shriveled_kernels": -15,
+        "damaged_kernels": -18,
+        "foreign_matter": -12,
+        "insect_damage": -20,
+        "fungal_infection": -25
+    }
+}

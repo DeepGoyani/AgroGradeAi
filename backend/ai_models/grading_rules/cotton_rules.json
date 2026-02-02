@@ -1,0 +1,21 @@
+{
+    "min_whiteness": 0.85,
+    "max_yellowing_percent": 15,
+    "boll_opening_min": 0.7,
+    "lint_quality_min": 0.8,
+    "fiber_length_mm_min": 25,
+    "fiber_strength_min": 0.75,
+    "trash_content_max_percent": 5,
+    "grade_thresholds": {
+        "A": 85,
+        "B": 65,
+        "C": 45
+    },
+    "defect_penalties": {
+        "staining": -15,
+        "bark_contamination": -20,
+        "neps": -10,
+        "immature_fiber": -12,
+        "seed_coat_fragments": -8
+    }
+}

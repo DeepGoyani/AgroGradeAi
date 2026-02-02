@@ -1,0 +1,22 @@
+{
+    "min_red_hue": 0.92,
+    "max_defect_area_percent": 5,
+    "min_size_mm": 40,
+    "max_size_mm": 90,
+    "firmness_min": 0.7,
+    "color_uniformity_min": 0.85,
+    "surface_smoothness_min": 0.8,
+    "stem_quality_min": 0.7,
+    "grade_thresholds": {
+        "A": 85,
+        "B": 65,
+        "C": 45
+    },
+    "defect_penalties": {
+        "cracks": -15,
+        "sunscald": -20,
+        "bruises": -10,
+        "insect_damage": -25,
+        "uneven_ripening": -8
+    }
+}
