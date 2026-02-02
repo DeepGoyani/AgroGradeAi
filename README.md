@@ -1,4 +1,4 @@
-# AgroGradeAi: Advanced Agricultural Intelligence Platform
+    # AgroGradeAi: Advanced Agricultural Intelligence Platform
 
 ![AgroGradeAi Logo](public/favicon.ico)
 
