@@ -1,0 +1,346 @@
+{
+    "cotton_bacterial_blight": {
+        "organic": [
+            "Spray 0.5% Bordeaux mixture every 10 days",
+            "Remove and destroy infected plant parts immediately",
+            "Apply Pseudomonas fluorescens (10g/liter) as preventive spray",
+            "Improve drainage to reduce leaf wetness duration"
+        ],
+        "chemical": [
+            "Streptomycin sulfate 500ppm",
+            "Copper hydroxide 2g/L"
+        ],
+        "prevention": [
+            "Use disease-free certified seeds",
+            "Avoid overhead irrigation"
+        ]
+    },
+    "cotton_powdery_mildew": {
+        "organic": [
+            "Spray 2% neem oil solution every 7 days",
+            "Increase plant spacing to 60cm for better airflow",
+            "Apply Trichoderma viride (5g/liter) as soil drench",
+            "Dust with sulfur powder (25kg/ha) in early morning"
+        ],
+        "chemical": [
+            "Wettable sulfur 3g/L",
+            "Hexaconazole 0.1%"
+        ],
+        "prevention": [
+            "Avoid excessive nitrogen fertilization",
+            "Maintain balanced NPK ratio"
+        ]
+    },
+    "cotton_grey_mildew": {
+        "organic": [
+            "Spray sulfur dust (25kg/ha) during cool mornings",
+            "Apply Trichoderma harzianum as foliar spray",
+            "Improve field ventilation by proper plant spacing"
+        ],
+        "chemical": [
+            "Carbendazim 0.1%",
+            "Thiophanate methyl 0.1%"
+        ],
+        "prevention": [
+            "Use resistant varieties like MCU-5, LRA-5166"
+        ]
+    },
+    "cotton_leaf_curl": {
+        "organic": [
+            "Control whitefly vectors with yellow sticky traps (20/acre)",
+            "Spray neem oil 2% + soap solution weekly",
+            "Intercrop with marigold to repel whiteflies",
+            "Remove and destroy infected plants immediately"
+        ],
+        "chemical": [
+            "Imidacloprid 0.3ml/L (vector control)",
+            "Thiamethoxam 0.2g/L"
+        ],
+        "prevention": [
+            "Use Bt cotton resistant varieties",
+            "Avoid late sowing"
+        ]
+    },
+    "tomato_early_blight": {
+        "organic": [
+            "Spray copper oxychloride 0.3% every 7-10 days",
+            "Mulch with dried leaves to prevent soil splash",
+            "Remove and destroy lower leaves showing symptoms",
+            "Apply Trichoderma viride as soil drench (5g/L)"
+        ],
+        "chemical": [
+            "Mancozeb 0.25%",
+            "Chlorothalonil 0.2%"
+        ],
+        "prevention": [
+            "Practice 3-year crop rotation",
+            "Stake plants to improve air circulation"
+        ]
+    },
+    "tomato_late_blight": {
+        "organic": [
+            "Apply Bordeaux mixture 1% immediately upon detection",
+            "Remove ALL infected plant parts and burn",
+            "Spray Pseudomonas fluorescens (20g/L) preventively",
+            "Improve drainage - disease spreads in wet conditions"
+        ],
+        "chemical": [
+            "Metalaxyl + Mancozeb 0.25%",
+            "Cymoxanil 0.3%"
+        ],
+        "prevention": [
+            "Avoid overhead irrigation",
+            "Plant resistant varieties"
+        ]
+    },
+    "tomato_leaf_curl": {
+        "organic": [
+            "Install yellow sticky traps (25/acre) for whitefly control",
+            "Spray neem oil 3% weekly during early growth",
+            "Remove infected plants to prevent spread",
+            "Use reflective silver mulch to repel vectors"
+        ],
+        "chemical": [
+            "Imidacloprid 0.3ml/L",
+            "Acetamiprid 0.2g/L"
+        ],
+        "prevention": [
+            "Use resistant varieties like Arka Rakshak",
+            "Grow under protective net"
+        ]
+    },
+    "tomato_septoria_leaf_spot": {
+        "organic": [
+            "Spray copper-based fungicide (0.3%) weekly",
+            "Remove infected lower leaves promptly",
+            "Mulch to prevent soil splash onto leaves",
+            "Apply compost tea as preventive spray"
+        ],
+        "chemical": [
+            "Mancozeb 0.2%",
+            "Azoxystrobin 0.1%"
+        ],
+        "prevention": [
+            "Avoid working in wet fields",
+            "Sanitize tools between plants"
+        ]
+    },
+    "wheat_rust": {
+        "organic": [
+            "Spray 5% neem seed kernel extract at first symptoms",
+            "Apply Pseudomonas fluorescens (10g/liter) as foliar spray",
+            "Practice crop rotation with legumes next season",
+            "Remove volunteer wheat plants near fields"
+        ],
+        "chemical": [
+            "Propiconazole 0.1%",
+            "Tebuconazole 0.05%"
+        ],
+        "prevention": [
+            "Sow rust-resistant varieties",
+            "Avoid late sowing after November"
+        ]
+    },
+    "wheat_powdery_mildew": {
+        "organic": [
+            "Dust with sulfur powder (20kg/ha) early morning",
+            "Spray milk solution (1:9 with water) weekly",
+            "Apply neem oil 2% as preventive spray"
+        ],
+        "chemical": [
+            "Triadimefon 0.1%",
+            "Propiconazole 0.1%"
+        ],
+        "prevention": [
+            "Avoid excessive nitrogen",
+            "Use resistant varieties"
+        ]
+    },
+    "wheat_loose_smut": {
+        "organic": [
+            "Hot water seed treatment (52°C for 10 minutes)",
+            "Solar seed treatment (expose to sun for 4 hours)",
+            "Use certified disease-free seeds only"
+        ],
+        "chemical": [
+            "Carboxin 2g/kg seed",
+            "Thiram 2.5g/kg seed"
+        ],
+        "prevention": [
+            "Rogue out infected plants before flowering",
+            "Maintain seed purity"
+        ]
+    },
+    "rice_blast": {
+        "organic": [
+            "Spray Pseudomonas fluorescens 10g/L at tillering stage",
+            "Apply Trichoderma viride (5g/L) as preventive",
+            "Avoid excessive nitrogen - split applications instead",
+            "Maintain field sanitation - remove stubbles"
+        ],
+        "chemical": [
+            "Tricyclazole 0.06%",
+            "Isoprothiolane 0.1%"
+        ],
+        "prevention": [
+            "Use resistant varieties like IR64",
+            "Maintain proper water management"
+        ]
+    },
+    "rice_brown_spot": {
+        "organic": [
+            "Apply potash fertilizer (40kg/ha K2O) to strengthen plants",
+            "Spray Pseudomonas fluorescens preventively",
+            "Treat seeds with Trichoderma before sowing"
+        ],
+        "chemical": [
+            "Mancozeb 0.25%",
+            "Carbendazim 0.1%"
+        ],
+        "prevention": [
+            "Avoid water stress during grain filling",
+            "Use balanced NPK fertilization"
+        ]
+    },
+    "rice_sheath_blight": {
+        "organic": [
+            "Apply Trichoderma viride to soil before transplanting",
+            "Spray Pseudomonas fluorescens at boot stage",
+            "Drain excess water from fields",
+            "Reduce plant density in nursery"
+        ],
+        "chemical": [
+            "Hexaconazole 0.1%",
+            "Validamycin 0.2%"
+        ],
+        "prevention": [
+            "Avoid excessive nitrogen",
+            "Burn infected stubbles after harvest"
+        ]
+    },
+    "okra_yellow_vein_mosaic": {
+        "organic": [
+            "Control whitefly with yellow sticky traps (20/acre)",
+            "Spray neem oil 2% every 5 days during vegetative stage",
+            "Remove and destroy infected plants immediately",
+            "Intercrop with maize as barrier crop"
+        ],
+        "chemical": [
+            "Dimethoate 0.05% (vector control)",
+            "Imidacloprid 0.3ml/L"
+        ],
+        "prevention": [
+            "Use resistant varieties like Arka Anamika",
+            "Avoid summer planting"
+        ]
+    },
+    "okra_powdery_mildew": {
+        "organic": [
+            "Spray wettable sulfur 0.3% at first symptoms",
+            "Apply neem oil 2% weekly as preventive",
+            "Improve air circulation between plants"
+        ],
+        "chemical": [
+            "Carbendazim 0.1%",
+            "Hexaconazole 0.1%"
+        ],
+        "prevention": [
+            "Avoid excess nitrogen",
+            "Irrigate in morning, not evening"
+        ]
+    },
+    "potato_late_blight": {
+        "organic": [
+            "Spray Bordeaux mixture 1% immediately",
+            "Apply copper oxychloride 0.3% every 5-7 days",
+            "Remove ALL infected plant material and burn",
+            "Improve drainage urgently"
+        ],
+        "chemical": [
+            "Metalaxyl-M + Mancozeb 0.25%",
+            "Cymoxanil + Mancozeb 0.3%"
+        ],
+        "prevention": [
+            "Plant certified disease-free seed tubers",
+            "Avoid overhead irrigation"
+        ]
+    },
+    "potato_early_blight": {
+        "organic": [
+            "Spray copper hydroxide 0.2% at first symptoms",
+            "Apply Trichoderma viride as preventive",
+            "Mulch to prevent soil splash"
+        ],
+        "chemical": [
+            "Mancozeb 0.25%",
+            "Chlorothalonil 0.2%"
+        ],
+        "prevention": [
+            "Practice crop rotation (3 years)",
+            "Remove volunteer potato plants"
+        ]
+    },
+    "chilli_leaf_curl": {
+        "organic": [
+            "Control thrips and mites with neem oil 2%",
+            "Install blue sticky traps (15/acre) for thrips",
+            "Remove and destroy infected plants",
+            "Apply Beauveria bassiana for pest control"
+        ],
+        "chemical": [
+            "Fipronil 0.1% (for thrips)",
+            "Abamectin 0.5ml/L (for mites)"
+        ],
+        "prevention": [
+            "Use virus-free seedlings",
+            "Grow under protective covers"
+        ]
+    },
+    "chilli_anthracnose": {
+        "organic": [
+            "Spray Bordeaux mixture 1% at fruit initiation",
+            "Apply Trichoderma viride as soil drench",
+            "Remove infected fruits immediately",
+            "Avoid harvesting during wet weather"
+        ],
+        "chemical": [
+            "Carbendazim 0.1%",
+            "Mancozeb 0.25%"
+        ],
+        "prevention": [
+            "Use disease-free seeds",
+            "Practice 2-year crop rotation"
+        ]
+    },
+    "onion_purple_blotch": {
+        "organic": [
+            "Spray Trichoderma viride (5g/L) preventively",
+            "Apply neem cake to soil (250kg/ha)",
+            "Improve field drainage",
+            "Avoid leaf injury during operations"
+        ],
+        "chemical": [
+            "Mancozeb 0.25%",
+            "Chlorothalonil 0.2%"
+        ],
+        "prevention": [
+            "Use resistant varieties",
+            "Maintain proper plant spacing"
+        ]
+    },
+    "onion_stemphylium_blight": {
+        "organic": [
+            "Spray copper oxychloride 0.3% at first symptoms",
+            "Remove and destroy infected leaves",
+            "Apply potash to strengthen plant immunity"
+        ],
+        "chemical": [
+            "Tebuconazole 0.1%",
+            "Hexaconazole 0.1%"
+        ],
+        "prevention": [
+            "Avoid excessive nitrogen",
+            "Ensure good air circulation"
+        ]
+    }
+}
