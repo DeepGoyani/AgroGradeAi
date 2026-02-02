@@ -1,0 +1,80 @@
+{
+    "cotton": [
+        "healthy",
+        "bacterial_blight",
+        "powdery_mildew",
+        "grey_mildew",
+        "fusarium_wilt",
+        "leaf_curl",
+        "bollworm"
+    ],
+    "wheat": [
+        "healthy",
+        "rust",
+        "powdery_mildew",
+        "loose_smut",
+        "karnal_bunt",
+        "blast"
+    ],
+    "rice": [
+        "healthy",
+        "blast",
+        "brown_spot",
+        "sheath_blight",
+        "bacterial_leaf_blight",
+        "tungro"
+    ],
+    "tomato": [
+        "healthy",
+        "early_blight",
+        "late_blight",
+        "leaf_curl",
+        "septoria_leaf_spot",
+        "leaf_mold",
+        "mosaic_virus"
+    ],
+    "okra": [
+        "healthy",
+        "yellow_vein_mosaic",
+        "powdery_mildew",
+        "cercospora_leaf_spot",
+        "fruit_borer"
+    ],
+    "potato": [
+        "healthy",
+        "late_blight",
+        "early_blight",
+        "black_scurf",
+        "common_scab",
+        "mosaic_virus"
+    ],
+    "chilli": [
+        "healthy",
+        "leaf_curl",
+        "anthracnose",
+        "powdery_mildew",
+        "bacterial_wilt",
+        "mosaic_virus"
+    ],
+    "onion": [
+        "healthy",
+        "purple_blotch",
+        "stemphylium_blight",
+        "downy_mildew",
+        "thrips_damage"
+    ],
+    "groundnut": [
+        "healthy",
+        "tikka_disease",
+        "rust",
+        "collar_rot",
+        "root_rot"
+    ],
+    "sugarcane": [
+        "healthy",
+        "red_rot",
+        "smut",
+        "grassy_shoot",
+        "mosaic_virus"
+    ]
+}
