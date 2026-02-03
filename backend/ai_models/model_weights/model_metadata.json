@@ -1,0 +1,25 @@
+{
+  "model_name": "advanced_disease_detector",
+  "num_classes": 8,
+  "class_names": [
+    "healthy_leaf",
+    "bacterial_blight",
+    "powdery_mildew",
+    "leaf_spot",
+    "rust",
+    "anthracnose",
+    "mosaic_virus",
+    "curling"
+  ],
+  "input_shape": [
+    224,
+    224,
+    3
+  ],
+  "training_date": "2026-02-03 06:47:56",
+  "test_accuracy": 0.3166666626930237,
+  "test_loss": 11.919857025146484,
+  "model_type": "advanced_cnn_realistic_patterns",
+  "training_samples": 2000,
+  "epochs_trained": 5
+}

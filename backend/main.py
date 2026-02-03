@@ -11,7 +11,7 @@ import sys
 
 from app.config import settings
 from app.database import init_db, close_db
-from app.routes import ai_pipeline, crops
+from app.routes import ai_pipeline, crops, auth, dashboard, marketplace
 
 
 # =============================================================================
@@ -97,6 +97,9 @@ app.add_middleware(
 # =============================================================================
 app.include_router(ai_pipeline.router, prefix="/api", tags=["AI Pipeline"])
 app.include_router(crops.router, prefix="/api", tags=["Crops & Diseases"])
+app.include_router(auth.router, prefix="/api", tags=["Authentication"])
+app.include_router(dashboard.router, prefix="/api", tags=["Dashboard"])
+app.include_router(marketplace.router, prefix="/api", tags=["Marketplace"])
 
 # TODO: Add more routers
 # from app.routes import auth, farmers, marketplace, sensors
