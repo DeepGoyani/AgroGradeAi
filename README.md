@@ -1,7 +1,5 @@
     # AgroGradeAi: Advanced Agricultural Intelligence Platform
 
-![AgroGradeAi Logo](public/favicon.ico)
-
 ## 🌾 Overview
 
 AgroGradeAi is a cutting-edge agricultural technology platform designed to revolutionize farming practices through artificial intelligence and machine learning. Our comprehensive solution empowers farmers, agricultural professionals, and stakeholders with advanced tools for disease detection, quality grading, and marketplace connectivity.
