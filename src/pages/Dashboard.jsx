@@ -2,256 +2,432 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  Leaf, 
-  TrendingUp, 
-  AlertTriangle, 
-  CheckCircle, 
-  Calendar, 
-  DollarSign,
-  Users,
-  Activity,
-  BarChart3,
-  Camera,
-  Sprout,
-  Droplets,
-  Sun,
-  Wind
+import {
+  Droplet,
+  Leaf,
+  Zap,
+  Circle,
+  Thermometer,
+  Wind,
+  TrendingUp,
+  AlertTriangle,
+  CheckCircle,
+  Calendar,
+  RefreshCw,
+  Settings,
+  Bell,
+  Shield,
+  Tag,
+  MapPin,
+  Clock
 } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Dashboard = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({
-    totalAnalyses: 156,
-    healthyCrops: 124,
-    diseasedCrops: 32,
-    avgQuality: 78.5,
-    recentAnalyses: [
-      { id: 1, crop: 'Tomato', disease: 'Healthy', confidence: 92, quality: 85, date: '2024-02-03' },
-      { id: 2, crop: 'Wheat', disease: 'Leaf Spot', confidence: 87, quality: 72, date: '2024-02-03' },
-      { id: 3, crop: 'Cotton', disease: 'Healthy', confidence: 95, quality: 88, date: '2024-02-02' },
-      { id: 4, crop: 'Rice', disease: 'Bacterial Blight', confidence: 91, quality: 65, date: '2024-02-02' },
-      { id: 5, crop: 'Potato', disease: 'Healthy', confidence: 89, quality: 82, date: '2024-02-01' },
-    ],
-    cropDistribution: {
-      'Tomato': 45,
-      'Wheat': 32,
-      'Cotton': 28,
-      'Rice': 25,
-      'Potato': 18,
-      'Okra': 8
-    },
-    diseaseTrends: [
-      { disease: 'Healthy', count: 124, trend: 'up' },
-      { disease: 'Leaf Spot', count: 18, trend: 'down' },
-      { disease: 'Bacterial Blight', count: 14, trend: 'stable' },
-    ]
-  });
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    
-    if (!token || !userData) {
-      window.location.href = '/login';
-      return;
-    }
-    
-    setUser(JSON.parse(userData));
-    setLoading(false);
+    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    return () => clearInterval(timer);
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
+  // Mock sensor data
+  const sensorData = [
+    {
+      name: 'Moisture',
+      value: 68,
+      unit: '%',
+      status: 'Optimal',
+      icon: Droplet,
+      color: 'text-blue-400',
+      bgColor: 'bg-blue-500/10',
+      borderColor: 'border-l-blue-500'
+    },
+    {
+      name: 'Nitrogen',
+      value: 42,
+      unit: 'ppm',
+      status: 'Low',
+      icon: Leaf,
+      color: 'text-green-400',
+      bgColor: 'bg-green-500/10',
+      borderColor: 'border-l-green-500'
+    },
+    {
+      name: 'Phosphorus',
+      value: 38,
+      unit: 'ppm',
+      status: 'Good',
+      icon: Zap,
+      color: 'text-yellow-400',
+      bgColor: 'bg-yellow-500/10',
+      borderColor: 'border-l-yellow-500'
+    },
+    {
+      name: 'Potassium',
+      value: 55,
+      unit: 'ppm',
+      status: 'Good',
+      icon: Circle,
+      color: 'text-purple-400',
+      bgColor: 'bg-purple-500/10',
+      borderColor: 'border-l-purple-500'
+    },
+    {
+      name: 'Temp',
+      value: 28,
+      unit: '°C',
+      status: 'Normal',
+      icon: Thermometer,
+      color: 'text-red-400',
+      bgColor: 'bg-red-500/10',
+      borderColor: 'border-l-red-500'
+    },
+    {
+      name: 'Humidity',
+      value: 72,
+      unit: '%',
+      status: 'High',
+      icon: Wind,
+      color: 'text-cyan-400',
+      bgColor: 'bg-cyan-500/10',
+      borderColor: 'border-l-cyan-500'
+    },
+  ];
+
+  // Soil moisture trend data
+  const moistureTrendData = [
+    { time: '6AM', value: 72 },
+    { time: '9AM', value: 68 },
+    { time: '12PM', value: 58 },
+    { time: '3PM', value: 52 },
+    { time: '6PM', value: 56 },
+    { time: '9PM', value: 64 },
+    { time: 'Now', value: 68 },
+  ];
+
+  // Crop health index data
+  const cropHealthData = [
+    { day: 'Mon', value: 86 },
+    { day: 'Tue', value: 89 },
+    { day: 'Wed', value: 84 },
+    { day: 'Thu', value: 88 },
+    { day: 'Fri', value: 87 },
+    { day: 'Sat', value: 91 },
+    { day: 'Sun', value: 93 },
+  ];
+
+  // Recent alerts
+  const recentAlerts = [
+    {
+      icon: AlertTriangle,
+      color: 'text-yellow-400',
+      message: 'Soil moisture dropping below optimal level in Field 2',
+      time: '2h ago'
+    },
+    {
+      icon: CheckCircle,
+      color: 'text-green-400',
+      message: 'NPK levels optimal for tomato growth',
+      time: '5h ago'
+    },
+    {
+      icon: CheckCircle,
+      color: 'text-green-400',
+      message: 'Grade A certification received for cotton batch',
+      time: '1 day ago'
+    },
+  ];
+
+  // Recent disease scans
+  const recentScans = [
+    {
+      crop: 'Tomato',
+      status: 'Healthy',
+      confidence: 98,
+      time: 'Today',
+      icon: Leaf,
+      statusColor: 'text-green-400',
+      bgColor: 'bg-green-500/10'
+    },
+    {
+      crop: 'Cotton',
+      status: 'Early Blight',
+      confidence: 94,
+      time: 'Yesterday',
+      icon: Leaf,
+      statusColor: 'text-yellow-400',
+      bgColor: 'bg-yellow-500/10'
+    },
+    {
+      crop: 'Wheat',
+      status: 'Healthy',
+      confidence: 96,
+      time: '2 days ago',
+      icon: Leaf,
+      statusColor: 'text-green-400',
+      bgColor: 'bg-green-500/10'
+    },
+  ];
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading dashboard...</p>
-        </div>
-      </div>
-    );
-  }
-
-  const healthyPercentage = stats.totalAnalyses > 0 ? 
-    Math.round((stats.healthyCrops / stats.totalAnalyses) * 100) : 0;
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <Leaf className="h-8 w-8 text-green-600" />
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">AgroGrade Dashboard</h1>
-                <p className="text-sm text-gray-500">Welcome back, {user?.full_name || user?.username}</p>
+      <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-10">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-1">Farm Dashboard</h1>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <MapPin className="h-4 w-4" />
+                  <span>Gujarat, India</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Clock className="h-4 w-4" />
+                  <span>Last updated: {formatTime(currentTime)}</span>
+                </div>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <Badge variant="outline" className="text-green-600">
-                {user?.farm_name || 'Farmer'}
-              </Badge>
-              <Button variant="outline" onClick={handleLogout}>
-                Logout
+            <div className="flex items-center gap-3">
+              <Button variant="outline" size="sm" className="gap-2">
+                <RefreshCw className="h-4 w-4" />
+                Refresh
+              </Button>
+              <Button variant="outline" size="sm" className="gap-2">
+                <Settings className="h-4 w-4" />
+                Settings
+              </Button>
+              <Button variant="outline" size="sm" className="gap-2 relative">
+                <Bell className="h-4 w-4" />
+                Alerts
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </Button>
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Analyses</CardTitle>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.totalAnalyses}</div>
-              <p className="text-xs text-muted-foreground">+12% from last month</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Healthy Crops</CardTitle>
-              <CheckCircle className="h-4 w-4 text-green-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.healthyCrops}</div>
-              <p className="text-xs text-muted-foreground">{healthyPercentage}% healthy rate</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Diseased Crops</CardTitle>
-              <AlertTriangle className="h-4 w-4 text-red-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-red-600">{stats.diseasedCrops}</div>
-              <p className="text-xs text-muted-foreground">Requires attention</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avg Quality</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.avgQuality}%</div>
-              <p className="text-xs text-muted-foreground">+5% improvement</p>
-            </CardContent>
-          </Card>
+      <main className="container mx-auto px-6 py-6 space-y-6">
+        {/* Sensor Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          {sensorData.map((sensor) => (
+            <Card key={sensor.name} className={`glass-card border-l-4 ${sensor.borderColor}`}>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <sensor.icon className={`h-5 w-5 ${sensor.color}`} />
+                  <Badge variant="outline" className={`text-xs ${sensor.color}`}>
+                    {sensor.status}
+                  </Badge>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-2xl font-bold text-foreground">
+                    {sensor.value}
+                    <span className="text-sm text-muted-foreground ml-1">{sensor.unit}</span>
+                  </p>
+                  <p className="text-sm text-muted-foreground">{sensor.name}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Recent Analyses */}
-          <Card>
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Soil Moisture Trend */}
+          <Card className="glass-card lg:col-span-2">
             <CardHeader>
-              <CardTitle>Recent Analyses</CardTitle>
-              <CardDescription>Your latest crop disease detections</CardDescription>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Droplet className="h-5 w-5 text-blue-400" />
+                  <CardTitle>Soil Moisture Trend</CardTitle>
+                </div>
+                <select className="bg-secondary text-foreground text-sm rounded-md px-3 py-1 border border-border">
+                  <option>Today</option>
+                  <option>Week</option>
+                  <option>Month</option>
+                </select>
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {stats.recentAnalyses.map((analysis) => (
-                  <div key={analysis.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className={`w-2 h-2 rounded-full ${
-                        analysis.disease === 'Healthy' ? 'bg-green-500' : 'bg-red-500'
-                      }`} />
-                      <div>
-                        <p className="font-medium">{analysis.crop}</p>
-                        <p className="text-sm text-gray-500">{analysis.disease}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium">{analysis.confidence}%</p>
-                      <p className="text-xs text-gray-500">{analysis.date}</p>
-                    </div>
-                  </div>
-                ))}
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={moistureTrendData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis
+                    dataKey="time"
+                    stroke="hsl(var(--muted-foreground))"
+                    style={{ fontSize: '12px' }}
+                  />
+                  <YAxis
+                    stroke="hsl(var(--muted-foreground))"
+                    style={{ fontSize: '12px' }}
+                    domain={[0, 80]}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#3b82f6"
+                    strokeWidth={3}
+                    dot={{ fill: '#3b82f6', r: 4 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Recent Alerts */}
+          <Card className="glass-card">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Bell className="h-5 w-5 text-yellow-400" />
+                <CardTitle>Recent Alerts</CardTitle>
               </div>
-              <Button variant="outline" className="w-full mt-4" onClick={() => window.location.href = '/ai-analysis'}>
-                <Camera className="h-4 w-4 mr-2" />
-                New Analysis
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {recentAlerts.map((alert, index) => (
+                <div key={index} className="flex gap-3 p-3 rounded-lg bg-secondary/50 border border-border/50">
+                  <alert.icon className={`h-5 w-5 ${alert.color} flex-shrink-0 mt-0.5`} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-foreground leading-snug">{alert.message}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{alert.time}</p>
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" className="w-full">
+                View All Alerts
               </Button>
             </CardContent>
           </Card>
+        </div>
 
-          {/* Crop Distribution */}
-          <Card>
+        {/* Bottom Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Crop Health Index */}
+          <Card className="glass-card lg:col-span-2">
             <CardHeader>
-              <CardTitle>Crop Distribution</CardTitle>
-              <CardDescription>Your analyzed crops breakdown</CardDescription>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-green-400" />
+                  <CardTitle>Crop Health Index</CardTitle>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  <span>Last 7 days</span>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {Object.entries(stats.cropDistribution).map(([crop, count]) => (
-                  <div key={crop} className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>{crop}</span>
-                      <span>{count}</span>
-                    </div>
-                    <Progress value={(count / stats.totalAnalyses) * 100} className="h-2" />
-                  </div>
-                ))}
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={cropHealthData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis
+                    dataKey="day"
+                    stroke="hsl(var(--muted-foreground))"
+                    style={{ fontSize: '12px' }}
+                  />
+                  <YAxis
+                    stroke="hsl(var(--muted-foreground))"
+                    style={{ fontSize: '12px' }}
+                    domain={[70, 100]}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#22c55e"
+                    strokeWidth={3}
+                    dot={{ fill: '#22c55e', r: 4 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Recent Disease Scans */}
+          <Card className="glass-card">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Leaf className="h-5 w-5 text-green-400" />
+                <CardTitle>Recent Disease Scans</CardTitle>
               </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {recentScans.map((scan, index) => (
+                <div key={index} className={`flex items-center justify-between p-3 rounded-lg ${scan.bgColor} border border-border/50`}>
+                  <div className="flex items-center gap-3">
+                    <scan.icon className={`h-5 w-5 ${scan.statusColor}`} />
+                    <div>
+                      <p className="font-medium text-foreground">{scan.crop}</p>
+                      <p className={`text-sm ${scan.statusColor}`}>{scan.status}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-foreground">{scan.confidence}%</p>
+                    <p className="text-xs text-muted-foreground">{scan.time}</p>
+                  </div>
+                </div>
+              ))}
+              <Button variant="outline" className="w-full border-accent/50 text-accent hover:bg-accent/10">
+                View All Scans
+              </Button>
             </CardContent>
           </Card>
         </div>
 
-        {/* Environmental Conditions */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Environmental Conditions</CardTitle>
-            <CardDescription>Current farming conditions</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="flex items-center space-x-3">
-                <Droplets className="h-8 w-8 text-blue-500" />
+        {/* Trust Score Section */}
+        <Card className="glass-card border-2 border-accent/30 glow-accent">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Shield className="h-8 w-8 text-accent" />
+                </div>
                 <div>
-                  <p className="text-sm text-gray-500">Moisture</p>
-                  <p className="font-medium">65%</p>
+                  <h3 className="text-2xl font-bold text-foreground mb-1">Trust Score</h3>
+                  <p className="text-sm text-muted-foreground">Combined AI + Sensor Verification</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3">
-                <Sun className="h-8 w-8 text-yellow-500" />
-                <div>
-                  <p className="text-sm text-gray-500">Temperature</p>
-                  <p className="font-medium">28°C</p>
+
+              <div className="flex items-center gap-8">
+                <div className="text-center">
+                  <p className="text-5xl font-bold text-accent mb-1">92</p>
+                  <p className="text-sm text-muted-foreground">Overall</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-5xl font-bold text-green-400 mb-1">A</p>
+                  <p className="text-sm text-muted-foreground">Grade</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-5xl font-bold text-yellow-400 mb-1">1.4x</p>
+                  <p className="text-sm text-muted-foreground">Price Boost</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3">
-                <Wind className="h-8 w-8 text-gray-500" />
-                <div>
-                  <p className="text-sm text-gray-500">Humidity</p>
-                  <p className="font-medium">72%</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Sprout className="h-8 w-8 text-green-500" />
-                <div>
-                  <p className="text-sm text-gray-500">NPK Levels</p>
-                  <p className="font-medium">Balanced</p>
-                </div>
-              </div>
+
+              <Button className="bg-accent hover:bg-accent/90 text-accent-foreground gap-2 px-6 py-6 text-lg font-semibold">
+                <Tag className="h-5 w-5" />
+                Generate Trust Tag
+              </Button>
             </div>
           </CardContent>
         </Card>
-      </div>
+      </main>
     </div>
   );
 };
