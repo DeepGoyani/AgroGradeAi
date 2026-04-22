@@ -12,6 +12,17 @@ dist
 dist-ssr
 *.local
 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Credential/helper scripts
+login_credentials.py
+fix_github_auth.py
+github_push_helper.py
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

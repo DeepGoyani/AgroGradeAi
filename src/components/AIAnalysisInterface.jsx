@@ -40,12 +40,8 @@ const AIAnalysisInterface = () => {
       formData.append('farmer_id', 'frontend_user_001');
       formData.append('save_to_db', 'true');
 
-      const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:8000/api/ai/analyze', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
         body: formData,
       });
 

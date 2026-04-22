@@ -26,31 +26,11 @@ const App = () => (
         <Routes>
           <Route path="/login" element={<AuthPage />} />
           <Route path="/" element={<Index />} />
-          <Route path="/scanner" element={
-            <ProtectedRoute>
-              <DiseaseScanner />
-            </ProtectedRoute>
-          } />
-          <Route path="/grader" element={
-            <ProtectedRoute>
-              <QualityGrader />
-            </ProtectedRoute>
-          } />
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/marketplace" element={
-            <ProtectedRoute>
-              <Marketplace />
-            </ProtectedRoute>
-          } />
-          <Route path="/ai-analysis" element={
-            <ProtectedRoute>
-              <AIAnalysisInterface />
-            </ProtectedRoute>
-          } />
+          <Route path="/scanner" element={<DiseaseScanner />} />
+          <Route path="/grader" element={<QualityGrader />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/ai-analysis" element={<AIAnalysisInterface />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

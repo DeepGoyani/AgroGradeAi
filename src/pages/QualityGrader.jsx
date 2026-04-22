@@ -2,11 +2,11 @@ import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Star, 
-  TrendingUp, 
-  Award, 
-  CheckCircle, 
+import {
+  Star,
+  TrendingUp,
+  Award,
+  CheckCircle,
   Upload,
   Loader2,
   Package,
@@ -22,6 +22,7 @@ const QualityGrader = () => {
   const [isGrading, setIsGrading] = useState(false);
   const [gradeResult, setGradeResult] = useState(null);
   const [dragActive, setDragActive] = useState(false);
+  const [error, setError] = useState(null); // Add missing error state
 
   const mockGrades = [
     {
@@ -101,18 +102,75 @@ const QualityGrader = () => {
     }
   };
 
-  const simulateGrading = async () => {
+  const handleGrade = async () => {
+    if (!uploadedImage) return;
+
     setIsGrading(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    const result = mockGrades[Math.floor(Math.random() * mockGrades.length)];
-    setGradeResult(result);
-    setIsGrading(false);
+    setError(null);
+
+    try {
+      // 1. Convert data URL to Blob
+      const response = await fetch(uploadedImage);
+      const blob = await response.blob();
+      const file = new File([blob], "product_image.jpg", { type: "image/jpeg" });
+
+      // 2. Prepare FormData
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('save_to_db', 'true');
+
+      // 3. Call AI API
+      const apiResponse = await fetch('http://localhost:8000/api/ai/analyze', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!apiResponse.ok) {
+        throw new Error('Grading failed');
+      }
+
+      const data = await apiResponse.json();
+      const gradeResult = data.quality_grade;
+      const metrics = gradeResult.metrics || {};
+      const trustResult = data.trust_analysis || {};
+
+      // 4. Map Backend Metrics to UI
+      // Handle crop-specific metrics (Tomato example) or fallback to generic
+      let colorScore = metrics.hue_uniformity || metrics.red_coverage_percent || 80;
+      let sizeScore = metrics.size_consistency_score || 80;
+      let surfaceScore = metrics.defect_ratio_percent ? Math.max(0, 100 - metrics.defect_ratio_percent * 5) : 85;
+      let freshnessScore = metrics.green_shoulder_percent ? Math.max(0, 100 - metrics.green_shoulder_percent * 2) : gradeResult.score;
+
+      setGradeResult({
+        grade: gradeResult.grade,
+        score: gradeResult.score,
+        label: gradeResult.grade === 'A' ? "Premium Quality" : gradeResult.grade === 'B' ? "Standard Quality" : "Economy Quality",
+        color: gradeResult.grade === 'A' ? "success" : gradeResult.grade === 'B' ? "warning" : "destructive",
+        details: {
+          colorUniformity: Math.round(colorScore),
+          sizeDistribution: Math.round(sizeScore),
+          surfaceQuality: Math.round(surfaceScore),
+          freshness: Math.round(freshnessScore),
+        },
+        trustScore: trustResult.trust_score || 85,
+        priceMultiplier: gradeResult.grade === 'A' ? 1.4 : gradeResult.grade === 'B' ? 1.15 : 0.9,
+        crop: gradeResult.crop,
+        metrics: metrics // Store raw metrics if needed
+      });
+
+    } catch (err) {
+      console.error(err);
+      setError("Failed to grade image. Please try again.");
+    } finally {
+      setIsGrading(false);
+    }
   };
 
   const handleReset = () => {
     setUploadedImage(null);
     setGradeResult(null);
     setIsGrading(false);
+    setError(null);
   };
 
   const getGradeClass = (grade) => {
@@ -151,11 +209,10 @@ const QualityGrader = () => {
             <CardContent>
               {!uploadedImage ? (
                 <div
-                  className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-all ${
-                    dragActive
-                      ? "border-yellow-500 bg-yellow-50"
-                      : "border-gray-300 hover:border-yellow-400"
-                  }`}
+                  className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-all ${dragActive
+                    ? "border-yellow-500 bg-yellow-50"
+                    : "border-gray-300 hover:border-yellow-400"
+                    }`}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
                   onDragOver={handleDrag}
@@ -196,7 +253,7 @@ const QualityGrader = () => {
                   <div className="flex gap-3">
                     <Button
                       className="flex-1 bg-yellow-600 hover:bg-yellow-700"
-                      onClick={simulateGrading}
+                      onClick={handleGrade}
                       disabled={isGrading}
                     >
                       {isGrading ? (
@@ -216,6 +273,7 @@ const QualityGrader = () => {
                       Reset
                     </Button>
                   </div>
+                  {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                 </div>
               )}
             </CardContent>
@@ -264,8 +322,8 @@ const QualityGrader = () => {
                         <span className="text-sm text-gray-600">Color Uniformity</span>
                         <div className="flex items-center gap-2">
                           <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-green-500 h-2 rounded-full" 
+                            <div
+                              className="bg-green-500 h-2 rounded-full"
                               style={{ width: `${gradeResult.details.colorUniformity}%` }}
                             ></div>
                           </div>
@@ -276,8 +334,8 @@ const QualityGrader = () => {
                         <span className="text-sm text-gray-600">Size Distribution</span>
                         <div className="flex items-center gap-2">
                           <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-blue-500 h-2 rounded-full" 
+                            <div
+                              className="bg-blue-500 h-2 rounded-full"
                               style={{ width: `${gradeResult.details.sizeDistribution}%` }}
                             ></div>
                           </div>
@@ -288,8 +346,8 @@ const QualityGrader = () => {
                         <span className="text-sm text-gray-600">Surface Quality</span>
                         <div className="flex items-center gap-2">
                           <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-purple-500 h-2 rounded-full" 
+                            <div
+                              className="bg-purple-500 h-2 rounded-full"
                               style={{ width: `${gradeResult.details.surfaceQuality}%` }}
                             ></div>
                           </div>
@@ -300,8 +358,8 @@ const QualityGrader = () => {
                         <span className="text-sm text-gray-600">Freshness</span>
                         <div className="flex items-center gap-2">
                           <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-yellow-500 h-2 rounded-full" 
+                            <div
+                              className="bg-yellow-500 h-2 rounded-full"
                               style={{ width: `${gradeResult.details.freshness}%` }}
                             ></div>
                           </div>

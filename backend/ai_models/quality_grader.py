@@ -141,10 +141,27 @@ class QualityGrader:
         
         inference_time_ms = int((time.time() - start_time) * 1000)
         
-        return {
+        # Convert all values to Python native types to avoid Pydantic serialization errors
+        def to_native(obj):
+            """Recursively convert numpy types to Python native types"""
+            if isinstance(obj, dict):
+                return {k: to_native(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [to_native(item) for item in obj]
+            elif isinstance(obj, np.integer):
+                return int(obj)
+            elif isinstance(obj, np.floating):
+                return float(obj)
+            elif isinstance(obj, np.bool_):
+                return bool(obj)
+            elif isinstance(obj, np.ndarray):
+                return obj.tolist()
+            return obj
+        
+        return to_native({
             "crop": crop_type,
             "grade": grade,
-            "score": round(score, 2),
+            "score": round(float(score), 2),
             "metrics": result["metrics"],
             "defect_map": result.get("defect_map", []),
             "defect_count": len(result.get("defect_map", [])),
@@ -152,7 +169,7 @@ class QualityGrader:
             "trust_tag": trust_tag,
             "analysis_method": result.get("method", "opencv_analysis"),
             "inference_time_ms": inference_time_ms
-        }
+        })
     
     # =========================================================================
     # TOMATO GRADING

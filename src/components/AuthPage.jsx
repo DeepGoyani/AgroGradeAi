@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Eye, EyeOff, Leaf, User, Mail, Lock, Building } from 'lucide-react';
+import { Eye, EyeOff, Leaf, User, Mail, Lock, Building, Play } from 'lucide-react';
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -14,13 +14,13 @@ const AuthPage = () => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   // Login form state
   const [loginForm, setLoginForm] = useState({
     username: '',
     password: ''
   });
-  
+
   // Register form state
   const [registerForm, setRegisterForm] = useState({
     username: '',
@@ -52,7 +52,7 @@ const AuthPage = () => {
         // Store token and user info
         localStorage.setItem('token', data.access_token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        
+
         // Navigate to AI analysis page
         navigate('/ai-analysis');
       } else {
@@ -63,6 +63,24 @@ const AuthPage = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Handle demo login (bypass authentication)
+  const handleDemoLogin = () => {
+    // Set fake demo credentials in localStorage
+    const demoUser = {
+      id: 'demo-user-123',
+      username: 'demo',
+      email: 'demo@agrograde.ai',
+      full_name: 'Demo User',
+      farm_name: 'Demo Farm'
+    };
+
+    localStorage.setItem('token', 'demo-token-' + Date.now());
+    localStorage.setItem('user', JSON.stringify(demoUser));
+
+    // Navigate to dashboard
+    navigate('/dashboard');
   };
 
   // Handle registration
@@ -98,7 +116,7 @@ const AuthPage = () => {
         // Store token and user info
         localStorage.setItem('token', data.access_token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        
+
         // Navigate to AI analysis page
         navigate('/ai-analysis');
       } else {
@@ -157,7 +175,7 @@ const AuthPage = () => {
                         type="text"
                         placeholder="Enter your username"
                         value={loginForm.username}
-                        onChange={(e) => setLoginForm({...loginForm, username: e.target.value})}
+                        onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
                         className="pl-10"
                         required
                       />
@@ -173,7 +191,7 @@ const AuthPage = () => {
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Enter your password"
                         value={loginForm.password}
-                        onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
+                        onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                         className="pl-10 pr-10"
                         required
                       />
@@ -199,8 +217,8 @@ const AuthPage = () => {
                     </Alert>
                   )}
 
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     className="w-full bg-green-600 hover:bg-green-700"
                     disabled={isLoading}
                   >
@@ -221,7 +239,7 @@ const AuthPage = () => {
                         type="text"
                         placeholder="Choose a username"
                         value={registerForm.username}
-                        onChange={(e) => setRegisterForm({...registerForm, username: e.target.value})}
+                        onChange={(e) => setRegisterForm({ ...registerForm, username: e.target.value })}
                         className="pl-10"
                         required
                         minLength={3}
@@ -238,7 +256,7 @@ const AuthPage = () => {
                         type="email"
                         placeholder="Enter your email"
                         value={registerForm.email}
-                        onChange={(e) => setRegisterForm({...registerForm, email: e.target.value})}
+                        onChange={(e) => setRegisterForm({ ...registerForm, email: e.target.value })}
                         className="pl-10"
                         required
                       />
@@ -252,7 +270,7 @@ const AuthPage = () => {
                       type="text"
                       placeholder="Enter your full name"
                       value={registerForm.fullName}
-                      onChange={(e) => setRegisterForm({...registerForm, fullName: e.target.value})}
+                      onChange={(e) => setRegisterForm({ ...registerForm, fullName: e.target.value })}
                     />
                   </div>
 
@@ -265,7 +283,7 @@ const AuthPage = () => {
                         type="text"
                         placeholder="Enter your farm name"
                         value={registerForm.farmName}
-                        onChange={(e) => setRegisterForm({...registerForm, farmName: e.target.value})}
+                        onChange={(e) => setRegisterForm({ ...registerForm, farmName: e.target.value })}
                         className="pl-10"
                       />
                     </div>
@@ -280,7 +298,7 @@ const AuthPage = () => {
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Create a password"
                         value={registerForm.password}
-                        onChange={(e) => setRegisterForm({...registerForm, password: e.target.value})}
+                        onChange={(e) => setRegisterForm({ ...registerForm, password: e.target.value })}
                         className="pl-10 pr-10"
                         required
                         minLength={6}
@@ -310,7 +328,7 @@ const AuthPage = () => {
                         type={showConfirmPassword ? 'text' : 'password'}
                         placeholder="Confirm your password"
                         value={registerForm.confirmPassword}
-                        onChange={(e) => setRegisterForm({...registerForm, confirmPassword: e.target.value})}
+                        onChange={(e) => setRegisterForm({ ...registerForm, confirmPassword: e.target.value })}
                         className="pl-10 pr-10"
                         required
                         minLength={6}
@@ -337,8 +355,8 @@ const AuthPage = () => {
                     </Alert>
                   )}
 
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     className="w-full bg-green-600 hover:bg-green-700"
                     disabled={isLoading}
                   >
@@ -349,6 +367,20 @@ const AuthPage = () => {
             </Tabs>
           </CardContent>
         </Card>
+
+        {/* Demo Mode Button */}
+        <div className="text-center mt-6">
+          <Button
+            onClick={handleDemoLogin}
+            variant="outline"
+            size="lg"
+            className="w-full border-2 border-blue-500 text-blue-600 hover:bg-blue-50"
+          >
+            <Play className="mr-2 h-5 w-5" />
+            Try Demo Mode (No Login Required)
+          </Button>
+          <p className="text-xs text-gray-500 mt-2">Skip authentication and explore the dashboard</p>
+        </div>
 
         {/* Footer */}
         <div className="text-center mt-6 text-sm text-gray-600">

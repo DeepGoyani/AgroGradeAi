@@ -2,11 +2,11 @@ import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Camera, 
-  AlertTriangle, 
-  CheckCircle, 
-  Upload, 
+import {
+  Camera,
+  AlertTriangle,
+  CheckCircle,
+  Upload,
   Loader2,
   Leaf,
   TrendingUp,
@@ -19,6 +19,7 @@ const DiseaseScanner = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [scanResult, setScanResult] = useState(null);
   const [dragActive, setDragActive] = useState(false);
+  const [error, setError] = useState(null); // Add missing error state
 
   const mockDiseases = [
     {
@@ -79,18 +80,67 @@ const DiseaseScanner = () => {
     }
   };
 
-  const simulateScan = async () => {
+  const handleScan = async () => {
+    if (!uploadedImage) return;
+
     setIsScanning(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    const result = mockDiseases[Math.floor(Math.random() * mockDiseases.length)];
-    setScanResult(result);
-    setIsScanning(false);
+    setError(null);
+
+    try {
+      // 1. Convert data URL to Blob
+      const response = await fetch(uploadedImage);
+      const blob = await response.blob();
+      const file = new File([blob], "leaf_image.jpg", { type: "image/jpeg" });
+
+      // 2. Prepare FormData
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('save_to_db', 'true');
+
+      // 3. Call AI API
+      const apiResponse = await fetch('http://localhost:8000/api/ai/analyze', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!apiResponse.ok) {
+        throw new Error('Analysis failed');
+      }
+
+      const data = await apiResponse.json();
+      const diseaseResult = data.disease_diagnosis;
+
+      // 4. Map API response to UI State
+      setScanResult({
+        name: diseaseResult.disease.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        confidence: (diseaseResult.confidence * 100).toFixed(1),
+        severity: diseaseResult.severity_percent > 0
+          ? `${diseaseResult.severity_percent}% Severity`
+          : "Healthy",
+        description: diseaseResult.disease === 'healthy'
+          ? "No disease detected. Plant appears healthy."
+          : `Detected ${diseaseResult.disease} with ${diseaseResult.confidence * 100}% confidence.`,
+        remedies: [
+          ...diseaseResult.remedies.organic.map(r => ({ type: "Organic", name: "Solution", instructions: r })),
+          ...diseaseResult.remedies.chemical.map(r => ({ type: "Chemical", name: "Treatment", instructions: r })),
+          ...diseaseResult.remedies.prevention.map(r => ({ type: "Prevention", name: "Tip", instructions: r }))
+        ].slice(0, 4),
+        image_features: diseaseResult.image_features // Pass detailed metrics
+      });
+
+    } catch (err) {
+      console.error(err);
+      setError("Failed to analyze image. Please try again.");
+    } finally {
+      setIsScanning(false);
+    }
   };
 
   const handleReset = () => {
     setUploadedImage(null);
     setScanResult(null);
     setIsScanning(false);
+    setError(null);
   };
 
   return (
@@ -116,11 +166,10 @@ const DiseaseScanner = () => {
             <CardContent>
               {!uploadedImage ? (
                 <div
-                  className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-all ${
-                    dragActive
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-300 hover:border-green-400"
-                  }`}
+                  className={`relative border-2 border-dashed rounded-xl p-12 text-center transition-all ${dragActive
+                    ? "border-green-500 bg-green-50"
+                    : "border-gray-300 hover:border-green-400"
+                    }`}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
                   onDragOver={handleDrag}
@@ -161,7 +210,7 @@ const DiseaseScanner = () => {
                   <div className="flex gap-3">
                     <Button
                       className="flex-1 bg-green-600 hover:bg-green-700"
-                      onClick={simulateScan}
+                      onClick={handleScan}
                       disabled={isScanning}
                     >
                       {isScanning ? (
@@ -181,6 +230,7 @@ const DiseaseScanner = () => {
                       Reset
                     </Button>
                   </div>
+                  {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                 </div>
               )}
             </CardContent>
@@ -206,17 +256,15 @@ const DiseaseScanner = () => {
               ) : (
                 <div className="space-y-6">
                   <div
-                    className={`p-4 rounded-xl border ${
-                      scanResult.name === "Healthy"
-                        ? "border-green-500 bg-green-50"
-                        : "border-red-500 bg-red-50"
-                    }`}
+                    className={`p-4 rounded-xl border ${scanResult.name === "Healthy"
+                      ? "border-green-500 bg-green-50"
+                      : "border-red-500 bg-red-50"
+                      }`}
                   >
                     <div className="flex items-start gap-4">
                       <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                          scanResult.name === "Healthy" ? "bg-green-100" : "bg-red-100"
-                        }`}
+                        className={`w-12 h-12 rounded-xl flex items-center justify-center ${scanResult.name === "Healthy" ? "bg-green-100" : "bg-red-100"
+                          }`}
                       >
                         {scanResult.name === "Healthy" ? (
                           <CheckCircle className="w-6 h-6 text-green-600" />
@@ -237,10 +285,64 @@ const DiseaseScanner = () => {
                     </div>
                   </div>
 
+                  {/* Detailed Analysis Metrics (New Section) */}
+                  {scanResult.image_features && (
+                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                      <h4 className="font-semibold mb-3 flex items-center">
+                        <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                        Detailed Analysis Metrics
+                      </h4>
+                      <div className="space-y-3">
+                        {/* Green Coverage */}
+                        <div>
+                          <div className="flex justify-between text-sm mb-1">
+                            <span className="text-gray-600">Green Leaf Coverage</span>
+                            <span className="font-medium">{scanResult.image_features.green_coverage}%</span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-1.5">
+                            <div className="bg-green-500 h-1.5 rounded-full" style={{ width: `${Math.min(100, scanResult.image_features.green_coverage)}%` }}></div>
+                          </div>
+                        </div>
+
+                        {/* Disease Indicators */}
+                        <div>
+                          <div className="flex justify-between text-sm mb-1">
+                            <span className="text-gray-600">Disease Symptoms Detected</span>
+                            <span className="font-medium">{scanResult.image_features.disease_indicators}%</span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-1.5">
+                            <div className="bg-red-500 h-1.5 rounded-full" style={{ width: `${Math.min(100, scanResult.image_features.disease_indicators * 3)}%` }}></div>
+                          </div>
+                        </div>
+
+                        {/* Lesion Count */}
+                        <div className="flex justify-between items-center text-sm pt-1">
+                          <span className="text-gray-600">Distinct Lesions / Spots</span>
+                          <span className="font-medium bg-white px-2 py-0.5 rounded border">{scanResult.image_features.lesion_count} detected</span>
+                        </div>
+
+                        {/* EXTREME MODE: Texture Analysis */}
+                        {scanResult.image_features.texture_complexity && (
+                          <div className="pt-2 border-t border-gray-100">
+                            <div className="flex justify-between text-sm mb-1">
+                              <span className="text-gray-600">Surface Texture Complexity</span>
+                              <span className="font-medium text-purple-700">{scanResult.image_features.texture_complexity}</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-1.5">
+                              {/* Normalize roughly 0-1000 variance to 0-100% */}
+                              <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: `${Math.min(100, scanResult.image_features.texture_complexity / 2)}%` }}></div>
+                            </div>
+                            <p className="text-[10px] text-gray-400 mt-1 text-right">High variance = complex disease patterns</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   <div>
                     <h4 className="font-semibold mb-3">Recommended Actions:</h4>
                     <div className="space-y-2">
-                      {scanResult.remedies.map((remedy, index) => (
+                      {scanResult.remedies.length > 0 ? scanResult.remedies.map((remedy, index) => (
                         <div key={index} className="p-3 bg-gray-50 rounded-lg">
                           <div className="flex items-center gap-2 mb-1">
                             <Badge variant="outline">{remedy.type}</Badge>
@@ -248,7 +350,11 @@ const DiseaseScanner = () => {
                           </div>
                           <p className="text-sm text-gray-600">{remedy.instructions}</p>
                         </div>
-                      ))}
+                      )) : (
+                        <div className="p-3 bg-green-50 text-green-700 rounded-lg text-sm">
+                          No actions needed. Plant is healthy!
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -272,7 +378,7 @@ const DiseaseScanner = () => {
                 </p>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader>
                 <TrendingUp className="h-8 w-8 text-blue-600" />
@@ -284,7 +390,7 @@ const DiseaseScanner = () => {
                 </p>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader>
                 <Leaf className="h-8 w-8 text-green-600" />
