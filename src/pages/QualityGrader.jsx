@@ -120,7 +120,7 @@ const QualityGrader = () => {
       formData.append('save_to_db', 'true');
 
       // 3. Call AI API
-      const apiResponse = await fetch('http://localhost:8000/api/ai/analyze', {
+      const apiResponse = await fetch('https://agrogradeai-1.onrender.com/api/ai/analyze', {
         method: 'POST',
         body: formData,
       });

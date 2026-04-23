@@ -40,7 +40,7 @@ const Marketplace = () => {
 
   const loadProducts = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/marketplace/products');
+      const response = await fetch('https://agrogradeai-1.onrender.com/api/marketplace/products');
       if (response.ok) {
         const data = await response.json();
         setProducts(data.products || getMockProducts());

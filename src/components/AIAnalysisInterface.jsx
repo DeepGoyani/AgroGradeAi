@@ -40,7 +40,7 @@ const AIAnalysisInterface = () => {
       formData.append('farmer_id', 'frontend_user_001');
       formData.append('save_to_db', 'true');
 
-      const response = await fetch('http://localhost:8000/api/ai/analyze', {
+      const response = await fetch('https://agrogradeai-1.onrender.com/api/ai/analyze', {
         method: 'POST',
         body: formData,
       });
